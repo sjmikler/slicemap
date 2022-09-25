@@ -1,9 +1,10 @@
 [![PyPI version](https://badge.fury.io/py/slicemap.svg)](https://badge.fury.io/py/slicemap)
 
+SliceDict is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
+
 This is a useful data structure implemented entirely in Python with help of `sortedcontainers` package.
 Initially, I used a custom skip-list implementation, but this wasn't as fast as `sortedcontainers`
-([see benchmarks](https://grantjenks.com/docs/sortedcontainers/performance-scale.html)).
-SliceDict is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
+([see their benchmarks](https://grantjenks.com/docs/sortedcontainers/performance-scale.html)).
 
 Adding new ranges and querying values both have `O(log(n))` time complexity.
 
@@ -13,7 +14,7 @@ Adding new ranges and querying values both have `O(log(n))` time complexity.
 
 ```
 from slicemap import SliceMap
-sm = SliceMap(inlcude="start")
+sm = SliceMap(include="start")
 
 sm[-10:10] = 0
 sm[2:4] = 1
@@ -32,17 +33,19 @@ Outputs:
 
 ![figure1](https://github.com/gahaalt/slicemap/blob/main/figures/figure1.png?raw=true)
 
-#### Include `start` | `end`
+### Include `start` | `end`
+
+The default value is `include="start"`. But you can include the end of each slice instead.
 
 ```
 from slicemap import SliceMap
-sm1 = SliceMap(inlcude="start")
+sm1 = SliceMap(include="start")
 sm1[2:3] = 1
 sm1[3:4] = 2
 sm1[4:5] = 3
 print(sm1[3], sm1[4])
 
-sm2 = SliceMap(inlcude="end")
+sm2 = SliceMap(include="end")
 sm2[2:3] = 1
 sm2[3:4] = 2
 sm2[4:5] = 3
@@ -54,6 +57,30 @@ Outputs:
 ```
 2 3
 1 2
+```
+
+### Query either values or ranges
+
+You can equery each value individually, or query with a slice to get all values in given slice.
+
+```
+from slicemap import SliceMap
+sm = SliceMap(include="start")
+
+sm[-10:10] = 0
+sm[2:4] = 1
+sm[4:6] = 2
+sm[7:9] = 3
+sm[12:15] = 1.5
+print(sm[3], sm[5], sm[8])
+print(sm[3:8])
+```
+
+Outputs:
+
+```
+1 2 3
+(1, 2, 0, 3)
 ```
 
 # Applications

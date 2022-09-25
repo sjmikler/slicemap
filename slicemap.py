@@ -17,11 +17,30 @@ class SliceMap:
         self,
         include: str = "start",
     ):
+        """
+        SliceMap object that allows for setting values for slices and querying.
+
+        Parameters
+        ----------
+        include
+            Either "start" or "end". If "start", beggining of the slices will be
+            inclusive, otherwise ends of the slices will be inclusive.
+        """
         assert include in ("start", "end"), "Possible `include` values: start | end"
 
         self.data = SortedList(key=lambda x: x.up_to_key)
         self.data.add(Pair(up_to_key=float("inf"), value=None))
         self.include = include
+
+    def copy(self):
+        return deepcopy(self)
+
+    def export(self):
+        """Export SliceMap as list of tuples."""
+        return [(-float("inf"), self.data[0].up_to_key, self.data[0].value)] + [
+            (p1.up_to_key, p2.up_to_key, p2.value)
+            for p1, p2 in zip(self.data, self.data[1:])
+        ]
 
     def __setitem__(self, slice_key: slice, value: Any):
         assert isinstance(slice_key, slice)
@@ -55,10 +74,16 @@ class SliceMap:
 
         logging.debug("Inserting value %s up to key %s", old_value_to_keep, start)
         logging.debug("Inserting value %s up to key %s", value, stop)
-        self.data.add(Pair(up_to_key=start, value=old_value_to_keep))
+        if start > -float("inf"):
+            self.data.add(Pair(up_to_key=start, value=old_value_to_keep))
         self.data.add(Pair(up_to_key=stop, value=value))
 
     def __getitem__(self, key: SupportsFloat):
+        if key == float("inf"):
+            return self.data[-1].value
+        if key == -float("inf"):
+            return self.data[0].value
+
         if self.include == "start":
             search_op = self.data.bisect_right
         else:
@@ -74,9 +99,6 @@ class SliceMap:
 
     def __len__(self):
         return len(self.data) - 1
-
-    def __copy__(self):
-        return deepcopy(self)
 
     def __repr__(self):
         start_bracket = "[" if self.include == "start" else "("

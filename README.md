@@ -18,7 +18,7 @@ pip install slicemap
 
 ```
 from slicemap import SliceMap
-sm = SliceMap(include="start")
+sm = SliceMap()
 
 sm[-10:10] = 0
 sm[2:4] = 1

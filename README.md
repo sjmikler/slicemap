@@ -1,5 +1,3 @@
-[![PyPI version](https://badge.fury.io/py/slicemap.svg)](https://badge.fury.io/py/slicemap)
-
 SliceDict is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
 
 This is a useful data structure implemented entirely in Python with help of `sortedcontainers` package.
@@ -9,6 +7,12 @@ Initially, I used a custom skip-list implementation, but this wasn't as fast as 
 Adding new ranges and querying values both have `O(log(n))` time complexity.
 
 # Quick Start
+
+### Installation [![PyPI version](https://badge.fury.io/py/slicemap.svg)](https://badge.fury.io/py/slicemap)
+
+```
+pip install slicemap
+```
 
 ### Create, query and visualize SliceMap
 

@@ -50,7 +50,7 @@ class SliceMap:
         stop = slice_key.stop if slice_key.stop is not None else float("inf")
 
         logging.debug("Inserting value %s between keys %s:%s", value, start, stop)
-        if start > stop:
+        if start >= stop:
             logging.debug("Empty slice")
             return
 

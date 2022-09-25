@@ -1,3 +1,7 @@
+[![Python 3.7](https://github.com/gahaalt/slicemap/actions/workflows/python37.yaml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python37.yaml)
+[![Python 3.10](https://github.com/gahaalt/slicemap/actions/workflows/python310.yml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python310.yml)
+
+
 SliceMap is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
 
 This is a useful data structure implemented entirely in Python with help of `sortedcontainers` package.

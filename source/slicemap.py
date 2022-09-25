@@ -121,6 +121,6 @@ class SliceMap:
         try:
             from slicemap import plot_slicemap
 
-            return plot_slicemap(self)
+            return plot_slicemap(self) if len(self) > 0 else None
         except ImportError:
             logging.error("SliceMap.plot requires matplotlib to be installed!")

@@ -1,8 +1,8 @@
-from slicemap.slicemap import SliceMap
+from .source.slicemap import SliceMap
 
 try:
     import matplotlib.pyplot as plt
 
-    from slicemap.plotting import plot_slicemap
+    from .source.plotting import plot_slicemap
 except ImportError:
     pass

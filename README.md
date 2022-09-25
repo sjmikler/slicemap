@@ -1,4 +1,4 @@
-SliceDict is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
+SliceMap is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
 
 This is a useful data structure implemented entirely in Python with help of `sortedcontainers` package.
 Initially, I used a custom skip-list implementation, but this wasn't as fast as `sortedcontainers`

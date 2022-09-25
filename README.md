@@ -41,7 +41,7 @@ Outputs:
 
 ### Include `start` | `end`
 
-The default value is `include="start"`. But you can include the end of each slice instead.
+The default value is `include="start"`, but you can choose to include the end of slices instead.
 
 ```
 from slicemap import SliceMap

@@ -64,10 +64,6 @@ class SliceMap:
             existing slice will be 100% covered, it'll be removed.
         value
             Any python object can be a value.
-
-        Returns
-        -------
-        None
         """
         assert isinstance(slice_key, slice)
         assert slice_key.step == 1 or slice_key.step is None
@@ -114,7 +110,7 @@ class SliceMap:
 
         Returns
         -------
-        item
+        Any
             Value of the key or None (if key is not present in SliceMap).
 
         """
@@ -141,6 +137,11 @@ class SliceMap:
 
         If a slice becomes redundant because other slices are covering it 100%,
         it is removed from the SliceMap, and length might decrease.
+
+        Returns
+        -------
+        int
+            The number of slices in SliceMap.
         """
         return len(self.data) - 1
 

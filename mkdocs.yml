@@ -2,22 +2,21 @@ site_name: slicemap
 repo_url: https://github.com/gahaalt/slicemap
 
 nav:
-    - Home: README.md
+    -   Home: README.md
     - quick_start.md
     - applications.md
     - api.md
 
 
-
 plugins:
     - search
     - autorefs
-    - mkdocstrings:
-          default_handler: python
-          handlers:
-              python:
-                  options:
-                      docstring_style: numpy
+    -   mkdocstrings:
+            default_handler: python
+            handlers:
+                python:
+                    options:
+                        docstring_style: numpy
 
 theme:
     name: material

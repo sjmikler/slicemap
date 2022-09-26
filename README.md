@@ -3,7 +3,6 @@
 [![Python 3.9](https://github.com/gahaalt/slicemap/actions/workflows/python39.yaml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python39.yaml)
 [![Python 3.10](https://github.com/gahaalt/slicemap/actions/workflows/python310.yml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python310.yml)
 
-
 SliceMap is similar to a normal Python dict, but instead of setting values key by key, you set entire slices at once.
 
 It is a useful data structure implemented entirely in Python with help of `sortedcontainers` package.
@@ -13,6 +12,8 @@ Initially, I used a custom skip-list implementation, but this wasn't as fast as 
 Adding new slices and querying values both have `O(log(n))` time complexity. Adding new slices might make old ones become redundant. Thus `n` correspondes to the maximal number of slices present in SliceMap at a time.
 
 # Quick Start
+
+### [Documentation](https://gahaalt.github.io/slicemap/)
 
 ### Installation [![PyPI version](https://badge.fury.io/py/slicemap.svg)](https://badge.fury.io/py/slicemap)
 

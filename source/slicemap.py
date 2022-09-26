@@ -18,7 +18,7 @@ class SliceMap:
         include: str = "start",
     ):
         """
-        SliceMap dict that allows for setting values for whole slices of values.
+        SliceMap is like dict that allows for setting values for whole slices of values.
 
         It is efficient, having O(log(n)) insertion and querying time complexity.
         Under the hood, it uses SortedList and bisect search to find the correct

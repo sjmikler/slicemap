@@ -33,7 +33,7 @@ cd slicemap && pip install -e .
 
 ## Links
 
-* [See Documentation](https://gahaalt.github.io/slicemap/)
+* [See Documentation](https://slicemap.readthedocs.io/)
 * [See on GitHub](https://github.com/gahaalt/slicemap)
 * [See on PyPI](https://pypi.org/project/slicemap/)
 

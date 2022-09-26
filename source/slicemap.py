@@ -114,8 +114,8 @@ class SliceMap:
 
         Returns
         -------
-        1
-            Value or None (if key is not present in SliceMap).
+        item
+            Value of the key or None (if key is not present in SliceMap).
 
         """
         if key == float("inf"):

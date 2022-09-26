@@ -1,4 +1,4 @@
-# Class API
+# SliceMap API
 
 ::: slicemap.SliceMap
     options:

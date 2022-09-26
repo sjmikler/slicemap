@@ -4,7 +4,7 @@ from slicemap import SliceMap
 def test_range_1():
     r = SliceMap()
     for i in range(10):
-        r[i: i + 1] = i
+        r[i : i + 1] = i
 
     for i in range(10):
         assert r[i] == i
@@ -13,7 +13,7 @@ def test_range_1():
 def test_range_2():
     r = SliceMap()
     for i in range(10000):
-        r[i: i + 1] = i
+        r[i : i + 1] = i
 
     for i in range(10000):
         assert r[i] == i
@@ -22,7 +22,7 @@ def test_range_2():
 def test_range_include_end_1():
     r = SliceMap(include="end")
     for i in reversed(range(10)):
-        r[i: i + 1] = i
+        r[i : i + 1] = i
 
     for i in range(1, 10):
         assert r[i] == i - 1
@@ -91,6 +91,15 @@ def test_readme_example_4():
     for left, value, right in sorted(inputs, key=lambda x: x[1]):
         sm[left:right] = value
 
-    assert sm.export() == [(-float('inf'), 1, 0), (1, 3, 11), (3, 9, 13), (9, 12, 0),
-                           (12, 16, 7), (16, 19, 3), (19, 22, 18), (22, 23, 3),
-                           (23, 29, 13), (29, float('inf'), 0)]
+    assert sm.export() == [
+        (-float("inf"), 1, 0),
+        (1, 3, 11),
+        (3, 9, 13),
+        (9, 12, 0),
+        (12, 16, 7),
+        (16, 19, 3),
+        (19, 22, 18),
+        (22, 23, 3),
+        (23, 29, 13),
+        (29, float("inf"), 0),
+    ]

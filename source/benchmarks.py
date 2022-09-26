@@ -5,6 +5,7 @@ from slicemap import SliceMap
 
 
 def benchmark_insert_random(n=100):
+    """Insert random values to SliceMap and time the execution."""
     r = SliceMap()
     randoms = []
     for _ in range(n):
@@ -18,6 +19,7 @@ def benchmark_insert_random(n=100):
 
 
 def benchmark_insert_range(n=100):
+    """Insert range of values to SliceMap and time the execution."""
     r = SliceMap()
     numbers = []
     for i in range(n):

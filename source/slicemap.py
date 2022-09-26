@@ -18,7 +18,11 @@ class SliceMap:
         include: str = "start",
     ):
         """
-        SliceMap object that allows for setting values for slices and querying.
+        SliceMap dict that allows for setting values for whole slices of values.
+
+        It is efficient, having O(log(n)) insertion and querying time complexity.
+        Under the hood, it uses SortedList and bisect search to find the correct
+        place for a value.
 
         Parameters
         ----------
@@ -33,16 +37,38 @@ class SliceMap:
         self.include = include
 
     def copy(self):
+        """Returns a deepcopy of itself."""
         return deepcopy(self)
 
     def export(self):
-        """Export SliceMap as list of tuples."""
+        """Export SliceMap as list of tuples.
+
+        This allows using SliceMap's final slices in other parts of your program.
+        """
         return [(-float("inf"), self.data[0].up_to_key, self.data[0].value)] + [
             (p1.up_to_key, p2.up_to_key, p2.value)
             for p1, p2 in zip(self.data, self.data[1:])
         ]
 
     def __setitem__(self, slice_key: slice, value: Any):
+        """Add a new slice to SliceMap. All values in slice key will map to the value.
+
+        When adding new slice, a binary search will take place. This operation will
+        have ``O(log(n))`` time complexity.
+
+        Parameters
+        ----------
+        slice_key
+            Slice of numerical values. If already exists in SliceMap, overlapping
+            values will be overwritten. If, as a result of adding new slice, an
+            existing slice will be 100% covered, it'll be removed.
+        value
+            Any python object can be a value.
+
+        Returns
+        -------
+        None
+        """
         assert isinstance(slice_key, slice)
         assert slice_key.step == 1 or slice_key.step is None
 
@@ -79,6 +105,19 @@ class SliceMap:
         self.data.add(Pair(up_to_key=stop, value=value))
 
     def __getitem__(self, key: SupportsFloat):
+        """Check the value under the given key. If there's none, None will be returned.
+
+        Parameters
+        ----------
+        key
+            A numerical value.
+
+        Returns
+        -------
+        1
+            Value or None (if key is not present in SliceMap).
+
+        """
         if key == float("inf"):
             return self.data[-1].value
         if key == -float("inf"):
@@ -98,6 +137,11 @@ class SliceMap:
             return self.data[idx].value
 
     def __len__(self):
+        """Return the number of slices in SliceMap.
+
+        If a slice becomes redundant because other slices are covering it 100%,
+        it is removed from the SliceMap, and length might decrease.
+        """
         return len(self.data) - 1
 
     def __repr__(self):
@@ -118,6 +162,7 @@ class SliceMap:
         return "{" + ", ".join(values) + "}"
 
     def plot(self):
+        """If values are numerical and matplotlib is installed: plots SliceMap."""
         try:
             from slicemap import plot_slicemap
 

@@ -2,6 +2,19 @@ import matplotlib.pyplot as plt
 
 
 def plot_slicemap(slicemap, show=True):
+    """Plot SliceMap.
+
+    Parameters
+    ----------
+    slicemap
+        The SliceMap to be plotted.
+    show
+        If True, `plt.show()` will be called after creating the figure.
+
+    Returns
+    -------
+    None
+    """
     plt.figure(constrained_layout=True)
 
     ticks = [x.up_to_key for x in slicemap.data if abs(x.up_to_key) < float("inf")]

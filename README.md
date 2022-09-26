@@ -10,7 +10,7 @@ It is a useful data structure implemented entirely in Python with help of `sorte
 Initially, I used a custom skip-list implementation, but this wasn't as fast as `sortedcontainers`
 ([see their benchmarks](https://grantjenks.com/docs/sortedcontainers/performance-scale.html)).
 
-Adding new ranges and querying values both have `O(log(n))` time complexity.
+Adding new slices and querying values both have `O(log(n))` time complexity. Adding new slices might make old ones become redundant. Thus `n` correspondes to the maximal number of slices present in SliceMap at a time.
 
 # Quick Start
 
@@ -33,7 +33,7 @@ sm[7:9] = 3
 sm[12:15] = 1.5
 print(sm[2], sm[3], sm[4], sm[9], sm[15])
 
-# works only for numeric values
+# works only for numerical values
 sm.plot() 
 ```
 
@@ -141,3 +141,5 @@ Depending on the exact task formulation, answer should be easy to retrieve from 
 # Answers
 
 * Package `matplotlib` is an optional dependency - without it you can use the pacakge, but not the plotting functionality.
+* You can use slices based on any number-like objects (except complex numbers) as keys. It'll work with ints, floats or numpy values.
+* You can use any object as values.

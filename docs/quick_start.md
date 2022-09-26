@@ -13,8 +13,7 @@ sm[7:9] = 3
 sm[12:15] = 1.5
 print(sm[2], sm[3], sm[4], sm[9], sm[15])
 
-# works only for numerical values
-sm.plot() 
+sm.plot()  # plotting works only for numerical values
 ```
 
 Outputs:

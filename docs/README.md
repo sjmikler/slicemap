@@ -2,6 +2,7 @@
 
 [![PyPi version](https://img.shields.io/badge/dynamic/json?label=latest&query=info.version&url=https%3A%2F%2Fpypi.org%2Fpypi%2Fslicemap%2Fjson)](https://pypi.org/project/slicemap)
 [![PyPI license](https://img.shields.io/badge/dynamic/json?label=license&query=info.license&url=https%3A%2F%2Fpypi.org%2Fpypi%2Fslicemap%2Fjson)](https://pypi.org/project/slicemap/)
+[![Documentation Status](https://readthedocs.org/projects/slicemap/badge/?version=latest)](https://slicemap.readthedocs.io/en/latest/?badge=latest)
 [![Python 3.7](https://github.com/gahaalt/slicemap/actions/workflows/python37.yaml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python37.yaml)
 [![Python 3.8](https://github.com/gahaalt/slicemap/actions/workflows/python38.yaml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python38.yaml)
 [![Python 3.9](https://github.com/gahaalt/slicemap/actions/workflows/python39.yaml/badge.svg)](https://github.com/gahaalt/slicemap/actions/workflows/python39.yaml)

@@ -18,17 +18,18 @@ class SliceMap:
         include: str = "start",
     ):
         """
-        SliceMap is like dict that allows for setting values for whole slices of values.
+        SliceMap is like dict that allows setting values for whole slices of keys.
 
         It is efficient, having O(log(n)) insertion and querying time complexity.
         Under the hood, it uses SortedList and bisect search to find the correct
-        place for a value.
+        place for a key to insert.
 
         Parameters
         ----------
         include
-            Either "start" or "end". If "start", beggining of the slices will be
-            inclusive, otherwise ends of the slices will be inclusive.
+            Either "start" or "end". If "start", the key on the threshold between
+            two slices will belong to the second slice. If "end" it will belong to
+            the first slice.
         """
         assert include in ("start", "end"), "Possible `include` values: start | end"
 

@@ -25,13 +25,6 @@ Install easily with pip:
 pip install slicemap
 ```
 
-Or download from source and install locally:
-
-```
-git clone https://github.com/gahaalt/slicemap.git
-cd slicemap && pip install -e .
-```
-
 ## Links
 
 * [See Documentation](https://slicemap.readthedocs.io/)

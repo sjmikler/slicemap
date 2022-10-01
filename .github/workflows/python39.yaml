@@ -28,12 +28,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest mypy
         pip install slicemap
-    - name: Lint with flake8
-      run: |
-        flake8 .
-    - name: Lint with mypy
-      run: |
-        mypy .
+#    - name: Lint with flake8
+#      run: |
+#        flake8 .
+#    - name: Lint with mypy
+#      run: |
+#        mypy .
     - name: Test with pytest
       run: |
         pytest .

@@ -1,4 +1,4 @@
-from slicemap import SliceMap
+from .. import SliceMap
 
 
 def test_range_1():

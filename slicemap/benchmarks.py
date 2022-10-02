@@ -1,7 +1,7 @@
 import random
 import time
 
-from .. import SliceMap
+from slicemap import SliceMap
 
 
 def benchmark_insert_random(n=100):

@@ -22,7 +22,7 @@ Outputs:
 1 1 2 0 None
 ```
 
-![figure1](https://github.com/gahaalt/slicemap/blob/main/figures/figure1.png?raw=true)
+![figure1](https://github.com/gahaalt/slicemap/blob/main/docs/figures/figure1.png?raw=true)
 
 ## Include `start` | `end`
 

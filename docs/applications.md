@@ -37,6 +37,6 @@ Outputs:
 [(-inf, 1, 0), (1, 3, 11), (3, 9, 13), (9, 12, 0), (12, 16, 7), (16, 19, 3), (19, 22, 18), (22, 23, 3), (23, 29, 13), (29, inf, 0)]
 ```
 
-![figure2](https://github.com/gahaalt/slicemap/blob/main/figures/figure2.png?raw=true)
+![figure2](https://github.com/gahaalt/slicemap/blob/main/docs/figures/figure2.png?raw=true)
 
 Depending on the exact task formulation, answer should be easy to retrieve from the above.

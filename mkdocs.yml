@@ -2,7 +2,7 @@ site_name: slicemap
 repo_url: https://github.com/gahaalt/slicemap
 
 nav:
-    - Home: README.md
+    - README: README.md
     - quick_start.md
     - applications.md
     - api.md

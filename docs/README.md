@@ -15,7 +15,7 @@ similar to normal Python dict, but instead of setting values key by key, you set
 * Has only one dependency: [sortedcontainers](https://grantjenks.com/docs/sortedcontainers/)
 * Is efficient, it has `O(log(n))` time complexity for insertion and query
     * Adding new slices might make old ones become redundant, `n` correspondes to the maximal number of slices present in SliceMap at a time
-* Makes life easier, see [applications](https://gahaalt.github.io/slicemap/applications/)
+* Makes life easier, see [applications](https://slicemap.readthedocs.io/en/latest/applications/)
 
 ## Installation
 

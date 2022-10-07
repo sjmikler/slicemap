@@ -23,7 +23,7 @@ Features:
 
 ## Example
 
-```python
+```py
 >>> from slicemap import SliceMap
 >>> sm = SliceMap()
 >>> sm[-3:3] = 0.1

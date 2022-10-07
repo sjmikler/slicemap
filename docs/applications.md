@@ -4,7 +4,7 @@
 
 Easily solvable in `O(n*log(n))` time:
 
-```
+```py
 from slicemap import SliceMap
 
 # format [left_x, value, right_x]

@@ -27,7 +27,7 @@ pip install slicemap
 
 ## Links
 
-* [*Quick Start*](https://slicemap.readthedocs.io/en/latest/quick_start/)
+* [**Quick Start**](https://slicemap.readthedocs.io/en/latest/quick_start/)
 * [See Documentation](https://slicemap.readthedocs.io/)
 * [See on GitHub](https://github.com/gahaalt/slicemap/)
 * [See on PyPI](https://pypi.org/project/slicemap/)

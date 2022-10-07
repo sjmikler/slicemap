@@ -27,7 +27,7 @@ Features:
 >>> from slicemap import SliceMap
 >>> sm = SliceMap()
 >>> sm[-3:3] = 0.1
->>> sm[6.5:] = 'Hello, SliceMap'
+>>> sm[6.5:] = "Hello, SliceMap"
 >>> sm[0]
 0.1
 >>> sm[10]

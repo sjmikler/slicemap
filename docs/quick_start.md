@@ -2,7 +2,7 @@
 
 ## Create, query and visualize SliceMap
 
-```
+```python
 from slicemap import SliceMap
 sm = SliceMap()
 
@@ -28,7 +28,7 @@ Outputs:
 
 The default value is `include="start"`, but you can choose to include the end of slices instead.
 
-```
+```python
 from slicemap import SliceMap
 sm1 = SliceMap(include="start")
 sm1[2:3] = 1
@@ -54,7 +54,7 @@ Outputs:
 
 You can equery each value individually, or query with a slice to get all values in given slice.
 
-```
+```python
 from slicemap import SliceMap
 sm = SliceMap(include="start")
 

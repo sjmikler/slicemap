@@ -14,6 +14,7 @@ Slicemap is a MIT licensed library introducing a useful, dictionary-like data st
 similar to normal Python dict, but instead of setting values key by key, you set entire slices.
 
 Features:
+
 * Implemented entirely in Python
 * Has only one dependency: [sortedcontainers](https://grantjenks.com/docs/sortedcontainers/)
 * Is efficient, it has ``O(log(n))`` time complexity for insertion and query

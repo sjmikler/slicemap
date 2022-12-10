@@ -47,8 +47,7 @@ class SliceMap:
         This allows using SliceMap's final slices in other parts of your program.
         """
         return [(-float("inf"), self.data[0].up_to_key, self.data[0].value)] + [
-            (p1.up_to_key, p2.up_to_key, p2.value)
-            for p1, p2 in zip(self.data, self.data[1:])
+            (p1.up_to_key, p2.up_to_key, p2.value) for p1, p2 in zip(self.data, self.data[1:])
         ]
 
     def __setitem__(self, slice_key: slice, value: Any):
@@ -156,10 +155,7 @@ class SliceMap:
         values.append(f"(-inf,{p.up_to_key}{end_bracket}: {p.value}")
 
         for p1, p2 in zip(self.data, self.data[1:]):
-            values.append(
-                f"{start_bracket}{p1.up_to_key},{p2.up_to_key}"
-                f"{end_bracket}: {p2.value}"
-            )
+            values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}" f"{end_bracket}: {p2.value}")
 
         return "{" + ", ".join(values) + "}"
 

@@ -25,13 +25,16 @@ Features:
 ## Example
 
 ```py
->>> from slicemap import SliceMap
->>> sm = SliceMap()
->>> sm[-3:3] = 0.1
->>> sm[6.5:] = "Hello, SliceMap"
->>> sm[0]
+from slicemap import SliceMap
+sm = SliceMap()
+sm[-3:3] = 0.1
+sm[6.5:] = "Hello, SliceMap"
+print(sm[0])
+print(sm[10])
+```
+
+```stdout
 0.1
->>> sm[10]
 'Hello, SliceMap'
 ```
 

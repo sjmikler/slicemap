@@ -18,8 +18,7 @@ setup(
     author="Szymon Mikler",
     author_email="sjmikler@gmail.com",
     license="MIT",
-    description="A tiny package containing a dict-like data structure with numeric"
-    " slices as keys.",
+    description="A tiny package containing a dict-like data structure with numeric" " slices as keys.",
     packages=packages,
     python_requires=">=3.7",
     classifiers=[

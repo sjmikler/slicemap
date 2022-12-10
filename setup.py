@@ -10,7 +10,7 @@ print("Packages found:", packages)
 
 setup(
     name="slicemap",
-    version="1.0.39",
+    version="1.0.40",
     url="https://github.com/gahaalt/slicemap.git",
     project_urls={
         "Documentation": "https://slicemap.readthedocs.io/",

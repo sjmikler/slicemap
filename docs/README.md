@@ -48,6 +48,6 @@ pip install slicemap
 
 ## Links
 
-* [Read Documentation](https://slicemap.readthedocs.io/)
+* [Read Documentation](https://slicemap.readthedocs.io/en/latest/quick_start/)
 * [See on GitHub](https://github.com/gahaalt/slicemap/)
 * [See on PyPI](https://pypi.org/project/slicemap/)

@@ -3,14 +3,14 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
+long_description = (this_directory / "README.md").read_text(encoding="UTF-8")
 
 packages = find_packages()
 print("Packages found:", packages)
 
 setup(
     name="slicemap",
-    version="1.0.38",
+    version="1.0.39",
     url="https://github.com/gahaalt/slicemap.git",
     project_urls={
         "Documentation": "https://slicemap.readthedocs.io/",

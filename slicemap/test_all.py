@@ -71,6 +71,7 @@ def test_readme_example_3():
     assert sm[5] == 2
     assert sm[8] == 3
     assert sm[3:8] == (1, 2, 0, 3)
+    assert sm[:] == (None, 0, 1, 2, 0, 3, 0, None, 1.5, None)
 
 
 def test_readme_example_4():

@@ -72,6 +72,7 @@ sm[7:9] = 3
 sm[12:15] = 1.5
 print(sm[3], sm[5], sm[8])
 print(sm[3:8])
+print(sm[:])
 ```
 
 Outputs:
@@ -79,6 +80,7 @@ Outputs:
 ```
 1 2 3
 (1, 2, 0, 3)
+(None, 0, 1, 2, 0, 3, 0, None, 1.5, None)
 ```
 
 ## Other options

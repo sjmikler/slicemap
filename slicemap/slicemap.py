@@ -10,24 +10,20 @@ from sortedcontainers import SortedList
 
 
 @dataclass
-class SlicePair:
+class Slicer:
     up_to_key: SupportsFloat
     value: Any = None
+    missing: bool = False
 
 
-class NotSet:
-    def __repr__(self):
-        return "NotSet"
-
-
-Slice = namedtuple("Slice", ["start", "stop", "value"])
+Slice = namedtuple("Slice", ["start", "end", "value"])
 
 
 class SliceMap:
     def __init__(
         self,
         include: str = "start",
-        raise_key_error: bool = False,
+        raise_missing: bool = False,
     ):
         """
         SliceMap is like dict that allows setting values for whole slices of keys.
@@ -42,7 +38,7 @@ class SliceMap:
             Either "start" or "end". If "start", the key on the threshold between
             two slices will belong to the second slice. If "end" it will belong to
             the first slice.
-        raise_key_error
+        raise_missing
             If True, accessing a key that was not set will raise KeyError. If False,
             accessing a key that was not set will return None.
 
@@ -51,22 +47,22 @@ class SliceMap:
 
         self.data = SortedList(key=lambda x: x.up_to_key)
 
-        initial_value = NotSet() if raise_key_error else None
-        self.data.add(SlicePair(up_to_key=float("inf"), value=initial_value))
+        self.data.add(Slicer(up_to_key=float("inf"), value=None, missing=True))
+        self.raise_missing = raise_missing
         self.include = include
 
     def copy(self) -> "SliceMap":
         """Returns a deepcopy of itself."""
         return deepcopy(self)
 
-    def export(self) -> list[tuple[float, float, Any]]:
+    def export(self) -> list[Slice]:
         """Export SliceMap as list of tuples.
 
         This allows using SliceMap's final slices in other parts of your program.
         """
-        return [(-float("inf"), self.data[0].up_to_key, self.data[0].value)] + [
-            (p1.up_to_key, p2.up_to_key, p2.value) for p1, p2 in zip(self.data, self.data[1:])
-        ]
+        start_element = [Slice(-float("inf"), self.data[0].up_to_key, self.data[0].value)]
+        elems = [Slice(p1.up_to_key, p2.up_to_key, p2.value) for p1, p2 in zip(self.data, self.data[1:])]
+        return start_element + elems
 
     def __setitem__(self, slice_key: slice, value: Any) -> None:
         """Add a new slice to SliceMap. All values in slice key will map to the value.
@@ -94,12 +90,14 @@ class SliceMap:
             logging.debug("Empty slice")
             return
 
-        start_key_idx = self.data.bisect_left(SlicePair(up_to_key=start))
-        end_key_idx = self.data.bisect_right(SlicePair(up_to_key=stop))
+        start_key_idx = self.data.bisect_left(Slicer(up_to_key=start))
+        end_key_idx = self.data.bisect_right(Slicer(up_to_key=stop))
         if start_key_idx < len(self.data):
             old_value_to_keep = self.data[start_key_idx].value
+            old_missing = self.data[start_key_idx].missing
         else:
             old_value_to_keep = None
+            old_missing = True
         num_el_to_remove = end_key_idx - start_key_idx
 
         logging.debug("Will remove %s values", num_el_to_remove)
@@ -115,13 +113,13 @@ class SliceMap:
         logging.debug("Inserting value %s up to key %s", old_value_to_keep, start)
         logging.debug("Inserting value %s up to key %s", value, stop)
         if start > -float("inf"):
-            self.data.add(SlicePair(up_to_key=start, value=old_value_to_keep))
-        self.data.add(SlicePair(up_to_key=stop, value=value))
+            self.data.add(Slicer(up_to_key=start, value=old_value_to_keep, missing=old_missing))
+        self.data.add(Slicer(up_to_key=stop, value=value, missing=False))
 
     def __getitem__(self, key: SupportsFloat | slice) -> Any:
         """Check the value under the given key.
 
-        If there's none and ``raise_key_error`` was set to False during SliceMap
+        If there's none and ``raise_missing`` was set to False during SliceMap
         initialization, None will be returned.
 
         Parameters
@@ -137,14 +135,14 @@ class SliceMap:
         Raises
         ------
         KeyError
-            If ``raise_key_error`` was set to True during SliceMap initialization,
+            If ``raise_missing`` was set to True during SliceMap initialization,
             KeyError will be raised when trying to access a key that was not set.
 
         """
         if key == float("inf"):
-            return self.maybe_raise(self.data[-1].value, key)
+            return self._maybe_get_value(self.data[-1], key)
         if key == -float("inf"):
-            return self.maybe_raise(self.data[0].value, key)
+            return self._maybe_get_value(self.data[0], key)
 
         if self.include == "start":
             search_op = self.data.bisect_right
@@ -155,17 +153,22 @@ class SliceMap:
             if key.start == -float("inf") or key.start is None:
                 idx1 = 0
             else:
-                idx1 = search_op(SlicePair(up_to_key=key.start))
+                idx1 = search_op(Slicer(up_to_key=key.start))
 
             if key.stop == float("inf") or key.stop is None:
                 idx2 = len(self.data) - 1
             else:
-                idx2 = search_op(SlicePair(up_to_key=key.stop))
+                idx2 = search_op(Slicer(up_to_key=key.stop))
 
-            return tuple(self.maybe_raise(self.data[i].value, key) for i in range(idx1, idx2 + 1))
+            return tuple(self._maybe_get_value(self.data[i], key) for i in range(idx1, idx2 + 1))
         else:
-            idx = search_op(SlicePair(up_to_key=key))
-            return self.maybe_raise(self.data[idx].value, key)
+            idx = search_op(Slicer(up_to_key=key))
+            return self._maybe_get_value(self.data[idx], key)
+
+    def _maybe_get_value(self, pair: Slicer, key: SupportsFloat | slice):
+        if self.raise_missing and pair.missing:
+            raise KeyError(f"Key {key} not set in SliceMap!")
+        return pair.value
 
     def get_slice_at(self, key: SupportsFloat) -> Slice:
         """Check the slice at the given key."""
@@ -182,13 +185,8 @@ class SliceMap:
         else:
             search_op = self.data.bisect_left
 
-        idx = search_op(SlicePair(up_to_key=key))
+        idx = search_op(Slicer(up_to_key=key))
         return Slice(self.data[idx - 1].up_to_key, self.data[idx].up_to_key, self.data[idx].value)
-
-    def maybe_raise(self, value: Any, key: SupportsFloat | slice) -> Any:
-        if isinstance(value, NotSet):
-            raise KeyError(f"Key {key} not set in SliceMap!")
-        return value
 
     def __len__(self) -> int:
         """Return the number of slices in SliceMap.

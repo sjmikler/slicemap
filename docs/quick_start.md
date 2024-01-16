@@ -86,10 +86,12 @@ Outputs:
 You can choose to raise `KeyError` when querying non-existing keys, or return `None` instead.
 By default `None` is returned.
 
+Example:
+
 ```py
 from slicemap import SliceMap
 
-sm = SliceMap(include="start", raise_key_error=True)
+sm = SliceMap(include="start", raise_missing=True)
 
 sm[-10:10] = 0
 
@@ -98,12 +100,18 @@ try:
 
     raise Exception("KeyError was not raised!")
 except KeyError:
-    print("KeyError was raised!")
+    print("KeyError was raised correctly!")
 ```
+
+Outputs:
+
+```
+KeyError was raised correctly!
+```    
 
 ---
 
-You can use `get_slice_at` to get more information about the slice at given point.
+You can use `get_slice_at` to get more information about the slice at given point:
 
 ```py
 from slicemap import SliceMap

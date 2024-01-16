@@ -140,9 +140,9 @@ class SliceMap:
 
         """
         if key == float("inf"):
-            return self.maybe_raise(self.data[-1].value)
+            return self.maybe_raise(self.data[-1].value, key)
         if key == -float("inf"):
-            return self.maybe_raise(self.data[0].value)
+            return self.maybe_raise(self.data[0].value, key)
 
         if self.include == "start":
             search_op = self.data.bisect_right
@@ -152,10 +152,10 @@ class SliceMap:
         if isinstance(key, slice):
             idx1 = search_op(SlicePair(up_to_key=key.start))
             idx2 = search_op(SlicePair(up_to_key=key.stop))
-            return tuple(self.maybe_raise(self.data[i].value) for i in range(idx1, idx2 + 1))
+            return tuple(self.maybe_raise(self.data[i].value, key) for i in range(idx1, idx2 + 1))
         else:
             idx = search_op(SlicePair(up_to_key=key))
-            return self.maybe_raise(self.data[idx].value)
+            return self.maybe_raise(self.data[idx].value, key)
 
     def get_slice_at(self, key: SupportsFloat) -> Slice:
         """Check the slice at the given key."""
@@ -175,9 +175,9 @@ class SliceMap:
         idx = search_op(SlicePair(up_to_key=key))
         return Slice(self.data[idx - 1].up_to_key, self.data[idx].up_to_key, self.data[idx].value)
 
-    def maybe_raise(self, value: Any) -> Any:
+    def maybe_raise(self, value: Any, key: SupportsFloat | slice) -> Any:
         if isinstance(value, NotSet):
-            raise KeyError(f"Key not set in SliceMap!")
+            raise KeyError(f"Key {key} not set in SliceMap!")
         return value
 
     def __len__(self) -> int:

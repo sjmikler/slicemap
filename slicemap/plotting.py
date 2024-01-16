@@ -31,7 +31,6 @@ def plot_slicemap(slicemap, show=True):
 
     x = mind
     while x < maxd:
-
         try:
             # In case if raise_key_error is True
             y = slicemap.__getitem__(x)

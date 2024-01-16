@@ -103,3 +103,43 @@ def test_readme_example_4():
         (23, 29, 13),
         (29, float("inf"), 0),
     ]
+
+
+def test_raising_oob():
+    sm = SliceMap(include="start", raise_key_error=True)
+    sm[2:3] = 1
+    sm[3:4] = 2
+    sm[4:5] = 3
+    sm[8:9] = 4
+
+    assert sm[2] == 1
+    assert sm[3] == 2
+    assert sm[4] == 3
+    assert sm[8] == 4
+
+    test_keys = [-float("inf"), 0, 1, 5, 9, 100, float("inf")]
+    for test_key in test_keys:
+        try:
+            _ = sm[test_key]
+            raise AssertionError("KeyError not raised")
+        except KeyError:
+            pass
+
+    sm = SliceMap(include="end", raise_key_error=True)
+    sm[2:3] = 1
+    sm[3:4] = 2
+    sm[4:5] = 3
+    sm[8:9] = 4
+
+    assert sm[3] == 1
+    assert sm[4] == 2
+    assert sm[5] == 3
+    assert sm[9] == 4
+
+    test_keys = [-float("inf"), 0, 1, 2, 8, 100, float("inf")]
+    for test_key in test_keys:
+        try:
+            _ = sm[test_key]
+            raise AssertionError("KeyError not raised")
+        except KeyError:
+            pass

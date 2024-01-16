@@ -81,6 +81,45 @@ Outputs:
 (1, 2, 0, 3)
 ```
 
+## Other options
+
+You can choose to raise `KeyError` when querying non-existing keys, or return `None` instead.
+By default `None` is returned.
+
+```py
+from slicemap import SliceMap
+
+sm = SliceMap(include="start", raise_key_error=True)
+
+sm[-10:10] = 0
+
+try:
+    print(sm[10])
+
+    raise Exception("KeyError was not raised!")
+except KeyError:
+    print("KeyError was raised!")
+```
+
+---
+
+You can use `get_slice_at` to get more information about the slice at given point.
+
+```py
+from slicemap import SliceMap
+
+sm = SliceMap(include="start")
+
+sm[-10:10] = 0
+print(sm.get_slice_at(0))
+```
+
+Outputs:
+
+```
+Slice(start=-10, end=10, value=0)
+```
+
 ## More information
 
 * Package `matplotlib` is an optional dependency - without it you can use the pacakge, but not the plotting

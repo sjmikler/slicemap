@@ -7,7 +7,7 @@ from sortedcontainers import SortedList
 
 
 @dataclass
-class Pair:
+class SlicePair:
     up_to_key: SupportsFloat
     value: Any = None
 
@@ -52,11 +52,11 @@ class SliceMap:
         self.data.add(SlicePair(up_to_key=float("inf"), value=initial_value))
         self.include = include
 
-    def copy(self):
+    def copy(self) -> "SliceMap":
         """Returns a deepcopy of itself."""
         return deepcopy(self)
 
-    def export(self):
+    def export(self) -> list[tuple[float, float, Any]]:
         """Export SliceMap as list of tuples.
 
         This allows using SliceMap's final slices in other parts of your program.
@@ -65,7 +65,7 @@ class SliceMap:
             (p1.up_to_key, p2.up_to_key, p2.value) for p1, p2 in zip(self.data, self.data[1:])
         ]
 
-    def __setitem__(self, slice_key: slice, value: Any):
+    def __setitem__(self, slice_key: slice, value: Any) -> None:
         """Add a new slice to SliceMap. All values in slice key will map to the value.
 
         When adding new slice, a binary search will take place. This operation will
@@ -91,8 +91,8 @@ class SliceMap:
             logging.debug("Empty slice")
             return
 
-        start_key_idx = self.data.bisect_left(Pair(up_to_key=start))
-        end_key_idx = self.data.bisect_right(Pair(up_to_key=stop))
+        start_key_idx = self.data.bisect_left(SlicePair(up_to_key=start))
+        end_key_idx = self.data.bisect_right(SlicePair(up_to_key=stop))
         if start_key_idx < len(self.data):
             old_value_to_keep = self.data[start_key_idx].value
         else:
@@ -112,8 +112,8 @@ class SliceMap:
         logging.debug("Inserting value %s up to key %s", old_value_to_keep, start)
         logging.debug("Inserting value %s up to key %s", value, stop)
         if start > -float("inf"):
-            self.data.add(Pair(up_to_key=start, value=old_value_to_keep))
-        self.data.add(Pair(up_to_key=stop, value=value))
+            self.data.add(SlicePair(up_to_key=start, value=old_value_to_keep))
+        self.data.add(SlicePair(up_to_key=stop, value=value))
 
     def __getitem__(self, key: SupportsFloat | slice) -> Any:
         """Check the value under the given key.
@@ -124,12 +124,18 @@ class SliceMap:
         Parameters
         ----------
         key
-            A numerical value.
+            A numerical key value.
 
         Returns
         -------
         Any
             Value of the key or None (if key is not present in SliceMap).
+
+        Raises
+        ------
+        KeyError
+            If ``raise_key_error`` was set to True during SliceMap initialization,
+            KeyError will be raised when trying to access a key that was not set.
 
         """
         if key == float("inf"):
@@ -143,9 +149,9 @@ class SliceMap:
             search_op = self.data.bisect_left
 
         if isinstance(key, slice):
-            idx1 = search_op(Pair(up_to_key=key.start))
-            idx2 = search_op(Pair(up_to_key=key.stop))
-            return tuple(self.data[i].value for i in range(idx1, idx2 + 1))
+            idx1 = search_op(SlicePair(up_to_key=key.start))
+            idx2 = search_op(SlicePair(up_to_key=key.stop))
+            return tuple(self.maybe_raise(self.data[i].value) for i in range(idx1, idx2 + 1))
         else:
             idx = search_op(Pair(up_to_key=key))
             return self.data[idx].value
@@ -168,25 +174,31 @@ class SliceMap:
         """
         return len(self.data) - 1
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         start_bracket = "[" if self.include == "start" else "("
         end_bracket = ")" if self.include == "start" else "]"
 
         values = []
 
         p = self.data[0]
-        values.append(f"(-inf,{p.up_to_key}{end_bracket}: {p.value}")
+        if p is self.data[-1]:
+            end_bracket = "]"
+
+        values.append(f"[-inf,{p.up_to_key}{end_bracket}: {p.value}")
 
         for p1, p2 in zip(self.data, self.data[1:]):
+            if p2 is self.data[-1]:
+                end_bracket = "]"
+
             values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}" f"{end_bracket}: {p2.value}")
 
         return "{" + ", ".join(values) + "}"
 
-    def plot(self):
+    def plot(self) -> None:
         """If values are numerical and matplotlib is installed: plots SliceMap."""
         try:
             from slicemap import plot_slicemap
 
             return plot_slicemap(self) if len(self) > 0 else None
         except ImportError:
-            logging.error("SliceMap.plot requires matplotlib to be installed!")
+            logging.error("SliceMap.plot requires matplotlib to be installed! Run `pip install matplotlib`")

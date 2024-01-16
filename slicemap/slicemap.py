@@ -12,10 +12,19 @@ class Pair:
     value: Any = None
 
 
+class NotSet:
+    def __repr__(self):
+        return "NotSet"
+
+
+Slice = namedtuple("Slice", ["start", "stop", "value"])
+
+
 class SliceMap:
     def __init__(
         self,
         include: str = "start",
+        raise_key_error: bool = False,
     ):
         """
         SliceMap is like dict that allows setting values for whole slices of keys.
@@ -30,11 +39,17 @@ class SliceMap:
             Either "start" or "end". If "start", the key on the threshold between
             two slices will belong to the second slice. If "end" it will belong to
             the first slice.
+        raise_key_error
+            If True, accessing a key that was not set will raise KeyError. If False,
+            accessing a key that was not set will return None.
+
         """
         assert include in ("start", "end"), "Possible `include` values: start | end"
 
         self.data = SortedList(key=lambda x: x.up_to_key)
-        self.data.add(Pair(up_to_key=float("inf"), value=None))
+
+        initial_value = NotSet() if raise_key_error else None
+        self.data.add(SlicePair(up_to_key=float("inf"), value=initial_value))
         self.include = include
 
     def copy(self):
@@ -100,8 +115,11 @@ class SliceMap:
             self.data.add(Pair(up_to_key=start, value=old_value_to_keep))
         self.data.add(Pair(up_to_key=stop, value=value))
 
-    def __getitem__(self, key: SupportsFloat):
-        """Check the value under the given key. If there's none, None will be returned.
+    def __getitem__(self, key: SupportsFloat | slice) -> Any:
+        """Check the value under the given key.
+
+        If there's none and ``raise_key_error`` was set to False during SliceMap
+        initialization, None will be returned.
 
         Parameters
         ----------
@@ -115,9 +133,9 @@ class SliceMap:
 
         """
         if key == float("inf"):
-            return self.data[-1].value
+            return self.maybe_raise(self.data[-1].value)
         if key == -float("inf"):
-            return self.data[0].value
+            return self.maybe_raise(self.data[0].value)
 
         if self.include == "start":
             search_op = self.data.bisect_right
@@ -132,7 +150,12 @@ class SliceMap:
             idx = search_op(Pair(up_to_key=key))
             return self.data[idx].value
 
-    def __len__(self):
+    def maybe_raise(self, value: Any) -> Any:
+        if isinstance(value, NotSet):
+            raise KeyError(f"Key not set in SliceMap!")
+        return value
+
+    def __len__(self) -> int:
         """Return the number of slices in SliceMap.
 
         If a slice becomes redundant because other slices are covering it 100%,

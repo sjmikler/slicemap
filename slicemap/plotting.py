@@ -31,7 +31,13 @@ def plot_slicemap(slicemap, show=True):
 
     x = mind
     while x < maxd:
-        y = slicemap.__getitem__(x)
+
+        try:
+            # In case if raise_key_error is True
+            y = slicemap.__getitem__(x)
+        except KeyError:
+            y = None
+
         if y is not None:
             xs.append(x)
             ys.append(y)

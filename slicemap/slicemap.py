@@ -1,4 +1,5 @@
 import logging
+from collections import namedtuple
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, SupportsFloat
@@ -153,8 +154,26 @@ class SliceMap:
             idx2 = search_op(SlicePair(up_to_key=key.stop))
             return tuple(self.maybe_raise(self.data[i].value) for i in range(idx1, idx2 + 1))
         else:
-            idx = search_op(Pair(up_to_key=key))
-            return self.data[idx].value
+            idx = search_op(SlicePair(up_to_key=key))
+            return self.maybe_raise(self.data[idx].value)
+
+    def get_slice_at(self, key: SupportsFloat) -> Slice:
+        """Check the slice at the given key."""
+
+        if self.__len__() == 0:
+            return Slice(-float("inf"), self.data[0].up_to_key, self.data[0].value)
+        if key == float("inf"):
+            return Slice(self.data[-2].up_to_key, self.data[-1].up_to_key, self.data[-1].value)
+        if key == -float("inf"):
+            return Slice(-float("inf"), self.data[0].up_to_key, self.data[0].value)
+
+        if self.include == "start":
+            search_op = self.data.bisect_right
+        else:
+            search_op = self.data.bisect_left
+
+        idx = search_op(SlicePair(up_to_key=key))
+        return Slice(self.data[idx - 1].up_to_key, self.data[idx].up_to_key, self.data[idx].value)
 
     def maybe_raise(self, value: Any) -> Any:
         if isinstance(value, NotSet):

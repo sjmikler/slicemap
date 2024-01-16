@@ -71,6 +71,7 @@ def test_readme_example_3():
     assert sm[5] == 2
     assert sm[8] == 3
     assert sm[3:8] == (1, 2, 0, 3)
+    assert sm[:] == (None, 0, 1, 2, 0, 3, 0, None, 1.5, None)
 
 
 def test_readme_example_4():
@@ -106,7 +107,7 @@ def test_readme_example_4():
 
 
 def test_raising_oob():
-    sm = SliceMap(include="start", raise_key_error=True)
+    sm = SliceMap(include="start", raise_missing=True)
     sm[2:3] = 1
     sm[3:4] = 2
     sm[4:5] = 3
@@ -125,7 +126,7 @@ def test_raising_oob():
         except KeyError:
             pass
 
-    sm = SliceMap(include="end", raise_key_error=True)
+    sm = SliceMap(include="end", raise_missing=True)
     sm[2:3] = 1
     sm[3:4] = 2
     sm[4:5] = 3
@@ -146,7 +147,7 @@ def test_raising_oob():
 
 
 def test_raising_oob_on_slices():
-    sm = SliceMap(include="start", raise_key_error=True)
+    sm = SliceMap(include="start", raise_missing=True)
     sm[2:3] = 1
     sm[3:4] = 2
     sm[4:5] = 3
@@ -172,7 +173,7 @@ def test_raising_oob_on_slices():
         except KeyError:
             pass
 
-    sm = SliceMap(include="end", raise_key_error=True)
+    sm = SliceMap(include="end", raise_missing=True)
     sm[2:3] = 1
     sm[3:4] = 2
     sm[4:5] = 3
@@ -200,7 +201,7 @@ def test_raising_oob_on_slices():
 
 
 def test_slicing():
-    sm = SliceMap(include="start", raise_key_error=False)
+    sm = SliceMap(include="start", raise_missing=False)
     sm[2:3] = 1
     sm[3:4] = 2
     sm[4:5] = 3

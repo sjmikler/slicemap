@@ -150,8 +150,16 @@ class SliceMap:
             search_op = self.data.bisect_left
 
         if isinstance(key, slice):
-            idx1 = search_op(SlicePair(up_to_key=key.start))
-            idx2 = search_op(SlicePair(up_to_key=key.stop))
+            if key.start == -float("inf") or key.start is None:
+                idx1 = 0
+            else:
+                idx1 = search_op(SlicePair(up_to_key=key.start))
+
+            if key.stop == float("inf") or key.stop is None:
+                idx2 = len(self.data) - 1
+            else:
+                idx2 = search_op(SlicePair(up_to_key=key.stop))
+
             return tuple(self.maybe_raise(self.data[i].value, key) for i in range(idx1, idx2 + 1))
         else:
             idx = search_op(SlicePair(up_to_key=key))

@@ -143,3 +143,74 @@ def test_raising_oob():
             raise AssertionError("KeyError not raised")
         except KeyError:
             pass
+
+
+def test_raising_oob_on_slices():
+    sm = SliceMap(include="start", raise_key_error=True)
+    sm[2:3] = 1
+    sm[3:4] = 2
+    sm[4:5] = 3
+    sm[8:9] = 4
+
+    assert sm[2:4] == (1, 2, 3)
+
+    test_keys = [
+        slice(-float("inf"), 0),
+        slice(0, 1),
+        slice(1, 5),
+        slice(2, 5),
+        slice(2, 8),
+        slice(5, 9),
+        slice(8, 9),
+        slice(9, 100),
+        slice(100, float("inf")),
+    ]
+    for test_key in test_keys:
+        try:
+            _ = sm[test_key]
+            raise AssertionError("KeyError not raised")
+        except KeyError:
+            pass
+
+    sm = SliceMap(include="end", raise_key_error=True)
+    sm[2:3] = 1
+    sm[3:4] = 2
+    sm[4:5] = 3
+    sm[8:9] = 4
+
+    assert sm[3:5] == (1, 2, 3)
+
+    test_keys = [
+        slice(-float("inf"), 0),
+        slice(0, 1),
+        slice(1, 2),
+        slice(2, 5),
+        slice(2, 8),
+        slice(3, 9),
+        slice(8, 9),
+        slice(8, 100),
+        slice(100, float("inf")),
+    ]
+    for test_key in test_keys:
+        try:
+            _ = sm[test_key]
+            raise AssertionError("KeyError not raised")
+        except KeyError:
+            pass
+
+
+def test_slicing():
+    sm = SliceMap(include="start", raise_key_error=False)
+    sm[2:3] = 1
+    sm[3:4] = 2
+    sm[4:5] = 3
+    sm[8:9] = 4
+
+    assert sm[2:4] == (1, 2, 3)
+    assert sm[2:5] == (1, 2, 3, None)
+    assert sm[2:8] == (1, 2, 3, None, 4)
+    assert sm[2:9] == (1, 2, 3, None, 4, None)
+    assert sm[2:10] == (1, 2, 3, None, 4, None)
+    assert sm[2:] == (1, 2, 3, None, 4, None)
+    assert sm[:9] == (None, 1, 2, 3, None, 4, None)
+    assert sm[:] == (None, 1, 2, 3, None, 4, None)

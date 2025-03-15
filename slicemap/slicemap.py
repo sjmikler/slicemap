@@ -46,7 +46,6 @@ class SliceMap:
         assert include in ("start", "end"), "Possible `include` values: start | end"
 
         self.data = SortedList(key=lambda x: x.up_to_key)
-
         self.data.add(Slicer(up_to_key=float("inf"), value=None, missing=True))
         self.raise_missing = raise_missing
         self.include = include
@@ -217,7 +216,7 @@ class SliceMap:
             if p2 is self.data[-1]:
                 end_bracket = "]"
 
-            values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}" f"{end_bracket}: {p2.value}")
+            values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}{end_bracket}: {p2.value}")
 
         return "{" + ", ".join(values) + "}"
 

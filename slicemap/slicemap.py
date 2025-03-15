@@ -46,7 +46,6 @@ class SliceMap:
         assert include in ("start", "end"), "Possible `include` values: start | end"
 
         self.data = SortedList(key=lambda x: x.up_to_key)
-
         self.data.add(Slicer(up_to_key=float("inf"), value=None, missing=True))
         self.raise_missing = raise_missing
         self.include = include

@@ -13,7 +13,7 @@ setup(
     version="1.1.2",
     url="https://github.com/gahaalt/slicemap.git",
     project_urls={
-        "Documentation": "https://slicemap.readthedocs.io/",
+        "Documentation": "https://github.com/sjmikler/slicemap/tree/main/docs",
     },
     author="Szymon Mikler",
     author_email="sjmikler@gmail.com",

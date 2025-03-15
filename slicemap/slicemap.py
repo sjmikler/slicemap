@@ -217,7 +217,7 @@ class SliceMap:
             if p2 is self.data[-1]:
                 end_bracket = "]"
 
-            values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}" f"{end_bracket}: {p2.value}")
+            values.append(f"{start_bracket}{p1.up_to_key},{p2.up_to_key}{end_bracket}: {p2.value}")
 
         return "{" + ", ".join(values) + "}"
 

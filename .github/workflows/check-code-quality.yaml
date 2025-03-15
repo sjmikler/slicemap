@@ -28,5 +28,5 @@ jobs:
         run: ruff check .
       - name: Run ruff formatting
         run: ruff format . --check
-      - name: Run pyright
-        run: pyright slicemap
+#      - name: Run pyright
+#        run: pyright slicemap

@@ -6,5 +6,7 @@ from .slicemap import SliceMap
 
 try:
     from .plotting import plot_slicemap
+
+    __all__ = ["SliceMap", "plot_slicemap"]
 except ImportError:
-    pass
+    __all__ = ["SliceMap"]
